@@ -11,10 +11,17 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('question_categories', function (Blueprint $table) {
+        Schema::create('questions', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('category_id');
+            $table->foreign('category_id')->references('id')->on('question_categories');
             $table->string("title");
             $table->string("slug")->unique();
+            $table->text("description")->nullable();
+            $table->json("options");
+            $table->string("answer");
+            $table->enum("weightage",[10,15,20])->default(10);
+            $table->boolean('status')->default(1);
             $table->softDeletes();
             $table->timestamps();
         });
@@ -25,6 +32,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('question_categories');
+        Schema::dropIfExists('questions');
     }
 };
