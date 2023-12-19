@@ -14,7 +14,7 @@ class VerifyEmailController extends Controller
         $request->fulfill();
 
         return redirect()->intended(
-            config('app.frontend_url').RouteServiceProvider::HOME.'?verified=1'
+            config('app.frontend_url') . RouteServiceProvider::LOGIN . '?verified=1'
         );
     }
 }
