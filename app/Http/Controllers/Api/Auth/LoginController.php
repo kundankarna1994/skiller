@@ -15,7 +15,13 @@ class LoginController
     {
 
         $request->authenticate();
-        $token = auth()->user()->createToken("personal-token")->plainTextToken;
+        $user = auth()->user();
+
+        if($user->user_type === "admin"){
+            $token = auth()->user()->createToken("personal-token",["admin-dashboard","manage-questions","manage-quiz"])->plainTextToken;
+        }else{
+            $token = auth()->user()->createToken("personal-token",['student-dashboard','take-quiz','update-profile'])->plainTextToken;
+        }
 
         return response()->json([
             'message' => "Successfully logged in",

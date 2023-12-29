@@ -12,8 +12,9 @@ class RegisterController
     public function __invoke(RegisterRequest $request): JsonResponse
     {
         $data = $request->validated();
-        $user = User::create($data);
+        $data['user_type'] = "Student";
 
+        $user = User::create($data);
         event(new Registered($user));
 
         return response()->json([
