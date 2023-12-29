@@ -10,7 +10,7 @@ use Illuminate\Validation\UnauthorizedException;
 class EmailVerificationRequest extends FormRequest
 {
 
-    private User $user;
+    private $user;
     /**
      * Determine if the user is authorized to make this request.
      */
@@ -22,7 +22,7 @@ class EmailVerificationRequest extends FormRequest
         $user = User::find($userId);
 
 
-        if (!$user || ! hash_equals(sha1($user->getEmailForVerification()), (string) $this->route('hash'))) {
+        if (!$user || !hash_equals(sha1($user->getEmailForVerification()), (string) $this->route('hash'))) {
             return false;
         }
 
@@ -44,7 +44,7 @@ class EmailVerificationRequest extends FormRequest
 
     public function fulfill(): void
     {
-        if (! $this->user->hasVerifiedEmail()) {
+        if (!$this->user->hasVerifiedEmail()) {
             $this->user->markEmailAsVerified();
 
             event(new Verified($this->user));
